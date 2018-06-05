@@ -68,12 +68,9 @@ public class Map{
     output.close();
   }
   public void load(){
-    /*
     path = sketchPath(name);
     File f = new File(path);
     if(f.exists()){
-      System.out.println(1);
-    }*/
     try{
       BufferedReader reader = createReader(name);
       for(int i=0; i<60; i++){
@@ -102,6 +99,7 @@ public class Map{
         i++;
       }
     }catch(IOException e){
+    }
     }
   }
 }
