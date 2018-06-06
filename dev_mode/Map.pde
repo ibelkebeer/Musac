@@ -95,6 +95,20 @@ public class Map{
               game[i].setK(1);
             }
           }
+          if(int(notes[j]) == 2){
+            if(j == 0){
+              game[i].setD(2);
+            }
+            if(j == 1){
+              game[i].setF(2);
+            }
+            if(j == 2){
+              game[i].setJ(2);
+            }
+            if(j == 3){
+              game[i].setK(2);
+            }
+          }
         }
         i++;
       }
