@@ -256,15 +256,15 @@ void mouseClicked(){
   if(mode == 2 && overButton(400,0,260,660)){
     if(mouseX < 465){
       if(startD == -1){
-        game.setD((Math.abs(int(mouseY)-659) / 40)+line,2);
-        startD = (Math.abs(int(mouseY)-659) / 40)+line;
+        game.setD((Math.abs(int(mouseY)-659) / game.size())+line,2);
+        startD = (Math.abs(int(mouseY)-659) / game.size())+line;
       }else{
-        if((Math.abs(int(mouseY)-659) / 40)+line < startD){
+        if((Math.abs(int(mouseY)-659) / game.size())+line < startD){
           game.setD(startD,0);
-          game.setD((Math.abs(int(mouseY)-659) / 40)+line,2);
-          startD = (Math.abs(int(mouseY)-659) / 40)+line;
+          game.setD((Math.abs(int(mouseY)-659) / game.size())+line,2);
+          startD = (Math.abs(int(mouseY)-659) / game.size())+line;
         }else{
-          for(int i = startD; i<=(Math.abs(int(mouseY)-659) / 40)+line; i++){
+          for(int i = startD; i<=(Math.abs(int(mouseY)-659) / game.size())+line; i++){
             game.setD(i,2);
           }
           startD = -1;
@@ -272,15 +272,15 @@ void mouseClicked(){
       }
     }else if(mouseX < 530){
       if(startF == -1){
-        game.setF((Math.abs(int(mouseY)-659) / 40)+line,2);
-        startF = (Math.abs(int(mouseY)-659) / 40)+line;
+        game.setF((Math.abs(int(mouseY)-659) / game.size())+line,2);
+        startF = (Math.abs(int(mouseY)-659) / game.size())+line;
       }else{
-        if((Math.abs(int(mouseY)-659) / 40)+line < startF){
+        if((Math.abs(int(mouseY)-659) / game.size())+line < startF){
           game.setF(startF,0);
-          game.setF((Math.abs(int(mouseY)-659) / 40)+line,2);
-          startF = (Math.abs(int(mouseY)-659) / 40)+line;
+          game.setF((Math.abs(int(mouseY)-659) / game.size())+line,2);
+          startF = (Math.abs(int(mouseY)-659) / game.size())+line;
         }else{
-          for(int i = startF; i<=(Math.abs(int(mouseY)-659) / 40)+line; i++){
+          for(int i = startF; i<=(Math.abs(int(mouseY)-659) / game.size())+line; i++){
             game.setF(i,2);
           }
           startF = -1;
@@ -288,15 +288,15 @@ void mouseClicked(){
       }
     }else if(mouseX < 595){
       if(startJ == -1){
-        game.setJ((Math.abs(int(mouseY)-659) / 40)+line,2);
-        startJ = (Math.abs(int(mouseY)-659) / 40)+line;
+        game.setJ((Math.abs(int(mouseY)-659) / game.size())+line,2);
+        startJ = (Math.abs(int(mouseY)-659) / game.size())+line;
       }else{
-        if((Math.abs(int(mouseY)-659) / 40)+line < startJ){
+        if((Math.abs(int(mouseY)-659) / game.size())+line < startJ){
           game.setJ(startJ,0);
-          game.setJ((Math.abs(int(mouseY)-659) / 40)+line,2);
-          startJ = (Math.abs(int(mouseY)-659) / 40)+line;
+          game.setJ((Math.abs(int(mouseY)-659) / game.size())+line,2);
+          startJ = (Math.abs(int(mouseY)-659) / game.size())+line;
         }else{
-          for(int i = startJ; i<=(Math.abs(int(mouseY)-659) / 40)+line; i++){
+          for(int i = startJ; i<=(Math.abs(int(mouseY)-659) / game.size())+line; i++){
             game.setJ(i,2);
           }
           startJ = -1;
@@ -304,15 +304,15 @@ void mouseClicked(){
       }
     }else{
       if(startK == -1){
-        game.setK((Math.abs(int(mouseY)-659) / 40)+line,2);
-        startK = (Math.abs(int(mouseY)-659) / 40)+line;
+        game.setK((Math.abs(int(mouseY)-659) / game.size())+line,2);
+        startK = (Math.abs(int(mouseY)-659) / game.size())+line;
       }else{
-        if((Math.abs(int(mouseY)-659) / 40)+line < startK){
+        if((Math.abs(int(mouseY)-659) / game.size())+line < startK){
           game.setK(startK,0);
-          game.setK((Math.abs(int(mouseY)-659) / 40)+line,2);
-          startK = (Math.abs(int(mouseY)-659) / 40)+line;
+          game.setK((Math.abs(int(mouseY)-659) / game.size())+line,2);
+          startK = (Math.abs(int(mouseY)-659) / game.size())+line;
         }else{
-          for(int i = startK; i<=(Math.abs(int(mouseY)-659) / 40)+line; i++){
+          for(int i = startK; i<=(Math.abs(int(mouseY)-659) / game.size())+line; i++){
             game.setK(i,2);
           }
           startK = -1;
@@ -322,16 +322,16 @@ void mouseClicked(){
   }
   if(mode == 3 && overButton(400,0,260,660)){
     if(mouseX < 465){
-      game.setD((Math.abs(int(mouseY)-660) / 40)+line,0);
+      game.setD((Math.abs(int(mouseY)-660) / game.size())+line,0);
     }
     else if(mouseX < 530){
-      game.setF((Math.abs(int(mouseY)-660) / 40)+line,0);
+      game.setF((Math.abs(int(mouseY)-660) / game.size())+line,0);
     }
     else if(mouseX < 595){
-      game.setJ((Math.abs(int(mouseY)-660) / 40)+line,0);
+      game.setJ((Math.abs(int(mouseY)-660) / game.size())+line,0);
     }
     else{
-      game.setK((Math.abs(int(mouseY)-660) / 40)+line,0);
+      game.setK((Math.abs(int(mouseY)-660) / game.size())+line,0);
     }
   }
 }
