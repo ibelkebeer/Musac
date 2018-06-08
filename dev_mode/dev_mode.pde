@@ -42,7 +42,7 @@ void draw(){
     break;
     case 1:
     background(255);
-    text("Enter bpm \n"+name,100,100);
+    text("Enter bpm \n"+result,100,100);
     if(bpmError){
       text("invalid bpm",100,200);
     }
@@ -366,6 +366,7 @@ void keyPressed(){
         nameError = false;
         path = sketchPath(result.substring(0,result.length()-3) + "txt");
         File d = new File(path);
+        result = "";
         if(d.exists()){
           state++;
           ellapsedTime = 0;
