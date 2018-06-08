@@ -1,8 +1,13 @@
 import processing.sound.*;
+import java.util.*;
+int state;
 SoundFile sample;
 SoundFile hit;
 String path1;
 String path2;
+String result = "";
+String name;
+float bpm;
 float speed = 1;
 float lineY;
 int mode = 0;
@@ -16,23 +21,33 @@ int startJ = -1;
 int startK = -1;
 boolean paused = false;
 boolean perfect = false;
+boolean nameError = false;
+boolean bpmError = false;
 int perfectCount = 0;
 Map game;
 void setup(){
   size(660,660);
   background(255);
-  time = millis();
-  ellapsedTime = 0;
-  path1 = sketchPath("Song2.mp3");
-  path2 = sketchPath("hit.wav");
-  sample = new SoundFile(this,path1);
-  hit = new SoundFile(this,path2);
-  game = new Map(sample,hit,180,"Song2");
-  game.load();
-  game.play();
-  lineY = 660 - game.size();
 }
 void draw(){
+  textSize(32);
+  fill(0);
+  switch(state){
+    case 0:
+    background(255);
+    text("Enter song name \n"+result,100,100);
+    if(nameError){
+      text("Music file does not exist",100,200);
+    }
+    break;
+    case 1:
+    background(255);
+    text("Enter bpm \n"+name,100,100);
+    if(bpmError){
+      text("invalid bpm",100,200);
+    }
+    break;
+    case 2:
   game.rate(speed);
   ellapsedTime = millis() - time;
   background(255);
@@ -82,6 +97,7 @@ void draw(){
       perfectCount = 0;
     }
   }
+}
 }
 void move(){
   for(float i=lineY; i>=0; i-=game.size()){
@@ -157,6 +173,7 @@ void increment(){
   }
 }
 void mouseClicked(){
+  if(state == 2){
   if(overButton(0,height-40,100,40)){
     speed = 0.25;
   }
@@ -335,78 +352,140 @@ void mouseClicked(){
     }
   }
 }
+}
 void keyPressed(){
-  if(key == CODED){
-    if(keyCode == LEFT){
-      if(ellapsedTime >= 1){
-        time += 1000;
-        ellapsedTime = millis() - time;
-        game.jump(ellapsedTime/1000);
-        line -= game.bpm() / 30;
+  switch(state){
+    case 0:
+    if(key==ENTER || key==RETURN){
+      String path = sketchPath(result);
+      File f = new File(path);
+      if(f.exists()){
+        path1 = sketchPath(result);
+        name = result;
+        state++;
+        nameError = false;
+        path = sketchPath(result.substring(0,result.length()-3) + "txt");
+        File d = new File(path);
+        if(d.exists()){
+          state++;
+          ellapsedTime = 0;
+  path2 = sketchPath("hit.wav");
+  sample = new SoundFile(this,path1);
+  hit = new SoundFile(this,path2);
+  game = new Map(sample,hit,180,name.substring(0,name.length()-4));
+  game.load();
+  game.play();
+        }
+      }else{
+        nameError = true;
+      }  
+      result = "";
+    }else if(key==BACKSPACE && result.length() > 0){
+      result = result.substring(0,result.length()-1);
+    }else if(key != CODED){
+      result += key;
+    }
+    break;
+    case 1:
+    if(key==ENTER || key==RETURN){
+      float b = float(result);
+      if(!(b > 0)){
+        bpmError = true;
+      }else{
+        state++;
+      }
+      result = "";
+      time = millis();
+  ellapsedTime = 0;
+  path2 = sketchPath("hit.wav");
+  sample = new SoundFile(this,path1);
+  hit = new SoundFile(this,path2);
+  game = new Map(sample,hit,180,name.substring(0,name.length()-4));
+  game.load();
+  game.play();
+  lineY = 660 - game.size();
+    }else if(key==BACKSPACE){
+      result = result.substring(0,result.length()-1);
+    }else if(key != RETURN && key != ENTER){
+      result += key;
+    }
+    break;
+    case 2:
+    if(key == CODED){
+      if(keyCode == LEFT){
+        if(ellapsedTime >= 1){
+          time += 1000;
+          ellapsedTime = millis() - time;
+          game.jump(ellapsedTime/1000);
+          line -= game.bpm() / 30;
+        }
+      }
+      if(keyCode == RIGHT){
+        if(ellapsedTime <= sample.duration() * 1000){
+          time -= 1000;
+          ellapsedTime = millis() - time;
+          game.jump(ellapsedTime/1000);
+          line += game.bpm() / 30;
+        }
       }
     }
-    if(keyCode == RIGHT){
-      if(ellapsedTime <= sample.duration() * 1000){
-        time -= 1000;
+    if(key == ' '){
+      if(!paused){
+        paused = true;
+        game.stop();
+        pauseTime = millis();
+      }else{
+        time += millis() - pauseTime;
         ellapsedTime = millis() - time;
         game.jump(ellapsedTime/1000);
-        line += game.bpm() / 30;
+        paused = false;
       }
     }
-  }
-  if(key == ' '){
-    if(!paused){
-      paused = true;
-      game.stop();
-      pauseTime = millis();
-    }else{
-      time += millis() - pauseTime;
-      ellapsedTime = millis() - time;
-      game.jump(ellapsedTime/1000);
-      paused = false;
+    textSize(30);
+    if(key == 'd'){
+      game.hit();
+      if(game.getLine(2+line).getD() > 0 || (game.getLine(3+line).getD() > 0 && lineY >= 640)){
+        perfect = true;
+      }
     }
-  }
-  textSize(30);
-  if(key == 'd'){
-    game.hit();
-    if(game.getLine(2+line).getD() > 0 || (game.getLine(3+line).getD() > 0 && lineY >= 640)){
-      perfect = true;
+    if(key == 'f'){
+      game.hit();
+      if(game.getLine(2+line).getF() > 0 || (game.getLine(3+line).getF() > 0 && lineY >= 640)){
+        perfect = true;
+      }
     }
-  }
-  if(key == 'f'){
-    game.hit();
-    if(game.getLine(2+line).getF() > 0 || (game.getLine(3+line).getF() > 0 && lineY >= 640)){
-      perfect = true;
+    if(key == 'j'){
+      game.hit();
+      if(game.getLine(2+line).getJ() > 0 || (game.getLine(3+line).getJ() > 0 && lineY >= 640)){
+        perfect = true;
+      }
     }
-  }
-  if(key == 'j'){
-    game.hit();
-    if(game.getLine(2+line).getJ() > 0 || (game.getLine(3+line).getJ() > 0 && lineY >= 640)){
-      perfect = true;
+    if(key == 'k'){
+      game.hit();
+      if(game.getLine(2+line).getK() > 0 || (game.getLine(3+line).getK() > 0 && lineY >= 640)){
+        perfect = true;
+      }
     }
-  }
-  if(key == 'k'){
-    game.hit();
-    if(game.getLine(2+line).getK() > 0 || (game.getLine(3+line).getK() > 0 && lineY >= 640)){
-      perfect = true;
-    }
+    break;
   }
 }
 void keyReleased(){
-  if(key == 'd' && game.getLine(2+line).getD() == 2 || (game.getLine(3+line).getD() == 2 && lineY >= 640)){
-    game.hit();
-    perfect = true;
-  }
-  if(key == 'f' && game.getLine(2+line).getF() == 2 || (game.getLine(3+line).getF() == 2 && lineY >= 640)){
-    game.hit();
-    perfect = true;
-  }
-  if(key == 'j' && game.getLine(2+line).getJ() == 2 || (game.getLine(3+line).getJ() == 2 && lineY >= 640)){
-    game.hit();
-    perfect = true;
-  }
-  if(key == 'k' && game.getLine(2+line).getK() == 2|| (game.getLine(3+line).getK() == 2 && lineY >= 640)){
-    game.hit();
-    perfect = true;
+  if(state == 2){
+    if(key == 'd' && game.getLine(2+line).getD() == 2 || (game.getLine(3+line).getD() == 2 && lineY >= 640)){
+      game.hit();
+      perfect = true;
+    }
+    if(key == 'f' && game.getLine(2+line).getF() == 2 || (game.getLine(3+line).getF() == 2 && lineY >= 640)){
+      game.hit();
+      perfect = true;
+    }
+    if(key == 'j' && game.getLine(2+line).getJ() == 2 || (game.getLine(3+line).getJ() == 2 && lineY >= 640)){
+      game.hit();
+      perfect = true;
+    }
+    if(key == 'k' && game.getLine(2+line).getK() == 2|| (game.getLine(3+line).getK() == 2 && lineY >= 640)){
+      game.hit();
+      perfect = true;
+    }
   }
 }
