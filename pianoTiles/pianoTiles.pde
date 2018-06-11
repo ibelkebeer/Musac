@@ -70,6 +70,10 @@ void draw(){
     rect(400,height-120,260,40);
     fill(250,0,0);
     textSize(32);
+    text("D",420,height-90);
+    text("F",485,height-90);
+    text("J",560,height-90);
+    text("K",625,height-90);
     text("*.25",0,height);
     text("*1",100,height);
     text("*2",200,height);
