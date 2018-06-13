@@ -58,9 +58,7 @@ public class Map{
   }
   public void save(){
     output = createWriter(name);
-    for(int i=0; i<60; i++){
-      output.println("0 0 0 0");
-    }
+    output.println(bpm);
     for(int i=0; i<game.length; i++){
       output.println(game[i].getD() + " " + game[i].getF() + " " + game[i].getJ() + " " + game[i].getK());
     }
@@ -71,49 +69,48 @@ public class Map{
     path = sketchPath(name);
     File f = new File(path);
     if(f.exists()){
-    try{
-      BufferedReader reader = createReader(name);
-      for(int i=0; i<60; i++){
-        reader.readLine();
-      }
-      int i = 0;
-      String line;
-      while((line = reader.readLine()) != null){
-        String[] notes = split(line,' ');
-        for(int j=0; j<4; j++){
-          if(int(notes[j]) == 1){
-            if(j == 0){
-              game[i].setD(1);
-            }
-            if(j == 1){
-              game[i].setF(1);
-            }
-            if(j == 2){
-              game[i].setJ(1);
-            }
-            if(j == 3){
-              game[i].setK(1);
+      try{
+        BufferedReader reader = createReader(name);
+        int i = 0;
+        String line;
+        while((line = reader.readLine()) != null){
+          if(i != 0){
+            String[] notes = split(line,' ');
+            for(int j=0; j<4; j++){
+              if(int(notes[j]) == 1){
+                if(j == 0){
+                  game[i].setD(1);
+                }
+                if(j == 1){
+                  game[i].setF(1);
+                }
+                if(j == 2){
+                  game[i].setJ(1);
+                }
+                if(j == 3){
+                  game[i].setK(1);
+                }
+              }
+              if(int(notes[j]) == 2){
+                if(j == 0){
+                  game[i].setD(2);
+                }
+                if(j == 1){
+                  game[i].setF(2);
+                }
+                if(j == 2){
+                  game[i].setJ(2);
+                }
+                if(j == 3){
+                  game[i].setK(2);
+                }
+              }
             }
           }
-          if(int(notes[j]) == 2){
-            if(j == 0){
-              game[i].setD(2);
-            }
-            if(j == 1){
-              game[i].setF(2);
-            }
-            if(j == 2){
-              game[i].setJ(2);
-            }
-            if(j == 3){
-              game[i].setK(2);
-            }
-          }
+          i++;
         }
-        i++;
+      }catch(IOException e){
       }
-    }catch(IOException e){
-    }
     }
   }
 }

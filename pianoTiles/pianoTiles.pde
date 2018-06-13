@@ -96,7 +96,7 @@ void draw(){
     }else{
       drawLines();
     }
-    text(String.valueOf(score),50,200);
+    text("Score: " + score,50,200);
     if(perfect){
       text("perfect",50,50);
       if(perfectCount == 0){
@@ -396,7 +396,11 @@ void keyPressed(){
           path2 = sketchPath("hit.wav");
           sample = new SoundFile(this,path1);
           hit = new SoundFile(this,path2);
-          game = new Map(sample,hit,180,name.substring(0,name.length()-4));
+          BufferedReader reader = createReader(d);
+          try{
+            game = new Map(sample,hit,float(reader.readLine()),name.substring(0,name.length()-4));
+          }catch(IOException e){
+          }
           game.load();
           game.play();
         }
